@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Tareas Kanban</title>
+  <link rel="shortcut icon" href="gestionTareas.jpg" type="image/x-icon">
+  <link rel="stylesheet" href="estilosTarea.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="btn-salir" href="../../../index.html">Salir</a>
+    </nav>
+  </header>
+
+  <div class="contenedor">
+    <h1>Panel de Actividades</h1>
+
+  <form id="taskForm">
+  <label for="Titulo">Título</label>
+  <input type="text" id="Titulo" name="titulo" required placeholder="Ingrese el título de la tarea o proyecto">
+
+  <label for="descripcion">Descripción</label>
+  <textarea id="descripcion" name="descripcion" rows="3" required placeholder="Detalles o notas sobre la tarea"></textarea></textarea>
+
+  <label for="fecha_creacion">FechaCreación</label>
+  <input type="date" name="fecha_creacion" required  placeholder="Seleccione la fecha de creación">
+
+  <label for="fecha_vencimiento">FechaVencimiento</label>
+  <input type="date" name="fecha_vencimiento" required placeholder="Seleccione la fecha límite">
+
+  <label for="Estado">Estado</label>
+  <select id="Estado" name="estado_tarea">
+    <option value="Por hacer">⏳ Por hacer</option>
+    <option value="En progreso">🔄 En progreso</option>
+    <option value="Finalizado">🏆 Finalizado</option>
+  </select>
+
+  <button type="submit">Agregar tarea</button>
+</form>
+
+
+    <div class="tablero">
+      <div class="columna" id="por-hacer">
+        <h2>Por Hacer</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th>Creación</th>
+              <th>Vencimiento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tareas-por-hacer"></tbody>
+        </table>
+      </div>
+
+      <div class="columna" id="en-progreso">
+        <h2>En Progreso</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th>Creación</th>
+              <th>Vencimiento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tareas-en-progreso"></tbody>
+        </table>
+      </div>
+
+      <div class="columna3" id="finalizado">
+        <h2>Finalizado</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th>Creación</th>
+              <th>Vencimiento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tareas-finalizado"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="tarea.js"></script>
+
+</body>
+</html>

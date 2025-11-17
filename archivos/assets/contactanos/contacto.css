@@ -1,0 +1,172 @@
+/* =========================================
+   CONTACTANOS - ESTILO BASADO EN CLARITY
+   ========================================= */
+
+/* Variables de color y fuente del tema */
+:root {
+  --background-color: #05071e;
+  --surface-color: #131428;
+  --default-color: #e8e7f7;
+  --heading-color: #ffffff;
+  --accent-color: #524dd3;
+  --contrast-color: #ffffff;
+  --default-font: "Roboto", system-ui, sans-serif;
+  --heading-font: "Quicksand", sans-serif;
+}
+
+/* ====== ESTRUCTURA GENERAL ====== */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--default-color);
+  font-family: var(--default-font);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+}
+
+/* ====== CONTENEDOR PRINCIPAL ====== */
+.contenedor {
+  background-color: var(--surface-color);
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 0 30px rgba(82, 77, 211, 0.2);
+  width: 420px;
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transition: 0.3s ease-in-out;
+}
+.contenedor:hover {
+  box-shadow: 0 0 55px rgba(82, 77, 211, 0.6);
+}
+
+/* ====== TÍTULO ====== */
+h1 {
+  font-family: var(--heading-font);
+  font-size: 32px;
+  color: var(--heading-color);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* ====== ETIQUETAS ====== */
+label {
+  font-weight: 500;
+  color: var(--default-color);
+  font-size: 15px;
+  display: block;
+  margin-bottom: 6px;
+  text-align: left;
+  width: 100%;
+}
+
+/* ====== CAMPOS DE TEXTO ====== */
+input,
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--default-color);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ====== EFECTO AL ESCRIBIR ====== */
+input:focus,
+textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(82, 77, 211, 0.4);
+}
+
+/* ====== TEXTAREA ====== */
+textarea {
+  resize: none;
+  height: 50px;
+}
+
+/* ====== BOTÓN ====== */
+input[type="submit"],
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+input[type="submit"]:hover,
+button:hover {
+  background: color-mix(in srgb, var(--accent-color), white 20%);
+  transform: scale(1.03);
+}
+
+/* ====== NAVBAR ====== */
+header {
+  width: 100%;
+  height: 60px;
+  background: rgba(19, 20, 40, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+nav {
+  display: flex;
+  gap: 180px;
+}
+
+nav a {
+  color: var(--default-color);
+  text-decoration: none;
+  font-family: fantasy;
+  font-size: 23px;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--accent-color);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 480px) {
+  .contenedor {
+    padding: 25px;
+    width: 90%;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-style: italic;
+  }
+
+  nav {
+    gap: 80px;
+  }
+}
