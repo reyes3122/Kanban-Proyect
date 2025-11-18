@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban en la Web</title>
+
+  <style>
+    /* ================================
+       KANBAN ANIMADO PROFESIONAL 2025
+       ================================ */
+    :root {
+      --violet: #8a63ff;
+      --violet-light: #b7a6ff;
+      --violet-dark: #2b1b63;
+      --bg-dark: #0d0c1d;
+      --text-light: #f5f4ff;
+      --card-bg: rgba(22, 21, 40, 0.85);
+      --border-radius: 1rem;
+      --transition: 0.3s ease;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      --gradient: linear-gradient(135deg, #3b2a77, #8a63ff);
+    }
+
+    body.light-mode {
+      --bg-dark: #f4f3ff;
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --text-light: #1b1135;
+      --violet-dark: #8a63ff;
+      --gradient: linear-gradient(135deg, #8a63ff, #cbb9ff);
+      background: #f4f3ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+      height: 100vh;
+      transition: background 1s, color 0.5s;
+    }
+
+    /* === FONDOS ANIMADOS === */
+    #galaxy,
+    #waves {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    #waves {
+      background: radial-gradient(circle at 20% 20%, #20144a, transparent 50%),
+        radial-gradient(circle at 80% 80%, #3b2a77, transparent 40%),
+        radial-gradient(circle at 50% 50%, #1b1135, transparent 60%);
+      animation: waveMove 20s infinite alternate ease-in-out;
+      background-size: 200% 200%;
+      z-index: -1;
+    }
+
+    @keyframes waveMove {
+      0% {
+        background-position: 0% 0%;
+      }
+
+      100% {
+        background-position: 100% 100%;
+      }
+    }
+
+    /* === CABECERA === */
+    header {
+      background: rgba(15, 14, 35, 0.7);
+      backdrop-filter: blur(15px);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      transition: all 0.5s;
+    }
+
+    .sitename {
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.6rem;
+      transition: var(--transition);
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+
+    .sitename:hover {
+      text-shadow: 0 0 20px var(--violet);
+      transform: scale(1.05);
+    }
+
+    nav a {
+      color: var(--text-light);
+      text-decoration: none;
+      margin-left: 25px;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background: var(--violet-light);
+      transition: width 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* === BOTÓN MODO CLARO/OSCURO === */
+    #toggle-theme {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 0 15px rgba(138, 99, 255, 0.4);
+    }
+
+    #toggle-theme:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(138, 99, 255, 0.6);
+    }
+
+    /* === CONTENIDO PRINCIPAL === */
+    main {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-weight: 800;
+      color: var(--violet-light);
+      text-shadow: 0 0 20px var(--violet-dark);
+      margin-bottom: 50px;
+      animation: fadeIn 2s ease;
+    }
+
+    /* === COLUMNAS === */
+    .kanban-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .kanban-column {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      width: 320px;
+      min-height: 380px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kanban-column:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 45px rgba(138, 99, 255, 0.3);
+    }
+
+    .kanban-header {
+      background: var(--gradient);
+      border-radius: var(--border-radius);
+      color: white;
+      padding: 12px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(138, 99, 255, 0.4);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .task {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--border-radius);
+      padding: 10px 15px;
+      margin: 12px 0;
+      cursor: grab;
+      user-select: none;
+      transition: all var(--transition);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      animation: appear 0.5s ease;
+    }
+
+    .task:hover {
+      background: rgba(138, 99, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .add-task {
+      background: none;
+      border: 2px dashed var(--violet-light);
+      color: var(--violet-light);
+      padding: 8px;
+      width: 100%;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .add-task:hover {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      box-shadow: 0 0 20px rgba(138, 99, 255, 0.4);
+    }
+
+    /* === FOOTER === */
+    footer {
+      background: rgba(10, 9, 21, 0.9);
+      color: var(--text-light);
+      text-align: center;
+      padding: 40px 0;
+      margin-top: 80px;
+      backdrop-filter: blur(10px);
+    }
+
+    footer a {
+      color: var(--violet-light);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    footer a:hover {
+      color: white;
+      text-shadow: 0 0 10px var(--violet-light);
+    }
+
+    #scroll-top {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 20;
+    }
+
+    #scroll-top:hover {
+      transform: scale(1.1);
+    }
+
+    /* === ANIMACIONES === */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="galaxy"></canvas>
+  <div id="waves"></div>
+
+  <header>
+    <div class="sitename">Kanban en la Web</div>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="#">Beneficios</a>
+      <a href="#">Usos</a>
+      <a href="#">Tablero</a>
+    </nav>
+    <button id="toggle-theme">☀️ Modo Claro</button>
+  </header>
+
+  <main>
+    <h1>✨ Organiza tu proyecto con estilo y energía ✨</h1>
+
+    <div class="kanban-container">
+      <div class="kanban-column" data-column="todo">
+        <div class="kanban-header">Por Hacer</div>
+        <div class="task" draggable="true">📚 Revisión de bibliografía</div>
+        <div class="task" draggable="true">🧩 Diseño del prototipo</div>
+        <button class="add-task">＋ Agregar tarea</button>
+      </div>
+
+      <div class="kanban-column" data-column="progress">
+        <div class="kanban-header">En Progreso</div>
+        <div class="task" draggable="true">🌐 Página web del proyecto</div>
+        <button class="add-task">＋ Agregar tarea</button>
+      </div>
+
+      <div class="kanban-column" data-column="done">
+        <div class="kanban-header">Finalizado</div>
+        <div class="task" draggable="true">🧾 Justificación del Estudio</div>
+        <div class="task" draggable="true">📘 Marco Teórico</div>
+        <div class="task" draggable="true">📋 Tablero Kanban</div>
+        <button class="add-task">＋ Agregar tarea</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>2025 Kanban en la Web</p>
+  </footer>
+
+  <button id="scroll-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">↑</button>
+
+  <script>
+    /* === GALAXIA DE PARTÍCULAS === */
+    const canvas = document.getElementById("galaxy");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    for (let i = 0; i < 100; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4
+      });
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(138,99,255,0.8)";
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+        s.x += s.dx;
+        s.y += s.dy;
+        if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
+        if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+
+    /* === DRAG & DROP DE TAREAS === */
+    let draggedTask = null;
+
+    document.addEventListener("dragstart", e => {
+      if (e.target.classList.contains("task")) {
+        draggedTask = e.target;
+        e.target.style.opacity = "0.5";
+      }
+    });
+
+    document.addEventListener("dragend", e => {
+      if (draggedTask) {
+        draggedTask.style.opacity = "1";
+        draggedTask = null;
+      }
+    });
+
+    document.querySelectorAll(".kanban-column").forEach(col => {
+      col.addEventListener("dragover", e => e.preventDefault());
+      col.addEventListener("drop", e => {
+        e.preventDefault();
+        if (draggedTask) col.insertBefore(draggedTask, col.querySelector(".add-task"));
+      });
+    });
+
+    /* === AGREGAR NUEVAS TAREAS === */
+    document.querySelectorAll(".add-task").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const text = prompt("Escribe la nueva tarea:");
+        if (text) {
+          const newTask = document.createElement("div");
+          newTask.className = "task";
+          newTask.draggable = true;
+          newTask.textContent = text;
+          btn.parentNode.insertBefore(newTask, btn);
+          newTask.style.animation = "appear 0.6s ease";
+        }
+      });
+    });
+
+    /* === CAMBIO DE MODO CLARO/OSCURO === */
+    const themeButton = document.getElementById("toggle-theme");
+    themeButton.addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+      const isLight = document.body.classList.contains("light-mode");
+      themeButton.textContent = isLight ? "🌙 Modo Oscuro" : "☀️ Modo Claro";
+    });
+  </script>
+</body>
+
+</html>
